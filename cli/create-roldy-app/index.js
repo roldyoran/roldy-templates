@@ -5,7 +5,7 @@ import fetch from "node-fetch";
 import { green, cyan, yellow, red } from "kolorist";
 import fs from "fs";
 
-const TEMPLATE_INDEX = "https://raw.githubusercontent.com/rol-dev/templates-index/main/templates.json";
+const TEMPLATE_INDEX = "https://raw.githubusercontent.com/roldyoran/roldy-templates/refs/heads/main/cli/create-roldy-app/templates.json";
 
 async function loadTemplates() {
   try {
@@ -96,20 +96,33 @@ async function main() {
   }
 
   console.log(cyan(`\n🚀 Creando proyecto '${projectName}' desde ${repo}...\n`));
+  execSync(`npx degit ${repo} ${projectName}`, { stdio: "inherit" });
+  console.log(yellow(`\n📦 Instalando dependencias para runtime: ${selected.runtime}...\n`));
 
   try {
-    execSync(`npx degit ${repo} ${projectName}`, { stdio: "inherit" });
-
-    console.log(yellow("\n📦 Instalando dependencias..."));
-    execSync(`cd ${projectName} && pnpm install`, { stdio: "inherit" });
-
-    console.log(green(`\n✅ Proyecto '${projectName}' creado con éxito.`));
-    console.log(cyan(`\n👉 Siguientes pasos:`));
-    console.log(`cd ${projectName}`);
-    console.log(`pnpm dev\n`);
-  } catch (err) {
-    console.error(red("Ocurrió un error al crear el proyecto:"), err);
+    if (selected.runtime === "node") {
+      const pm = selected.packageManager || "pnpm";
+      execSync(`cd ${projectName} && ${pm} install`, { stdio: "inherit" });
+    } else if (selected.runtime === "bun") {
+      execSync(`cd ${projectName} && bun install`, { stdio: "inherit" });
+    } else if (selected.runtime === "deno") {
+      console.log(yellow("ℹ️ Deno no requiere instalación de dependencias (usa import maps)."));
+    } else {
+      console.log(yellow("⚙️ No se requiere instalación de dependencias."));
+    }
+  } catch (e) {
+    console.error(red("❌ Error instalando dependencias:"), e);
   }
+
+
+
+  console.log(green(`\n✅ Proyecto '${projectName}' creado con éxito.`));
+  console.log(cyan(`\n👉 Siguientes pasos:`));
+  console.log(`cd ${projectName}`);
+  if (selected.runtime === "bun") console.log(`bun dev`);
+  else if (selected.runtime === "deno") console.log(`deno task start`);
+  else console.log(`${selected.packageManager || "pnpm"} dev`);
+
 }
 
 main().catch(err => console.error(err));
