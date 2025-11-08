@@ -4,6 +4,7 @@ import { execSync } from "child_process";
 import fetch from "node-fetch";
 import { green, cyan, yellow, red } from "kolorist";
 import fs from "fs";
+import path from "path";
 
 const TEMPLATE_INDEX = "https://raw.githubusercontent.com/roldyoran/roldy-templates/refs/heads/main/cli/create-roldy-app/templates.json";
 
@@ -95,16 +96,22 @@ async function main() {
     return;
   }
 
-  console.log(cyan(`\n🚀 Creando proyecto '${projectName}' desde ${repo}...\n`));
-  execSync(`npx degit ${repo} ${projectName}`, { stdio: "inherit" });
+  // Soporte para inicializar en la carpeta actual si el usuario escribe '.'
+  const rawName = projectName.trim();
+  const isCurrentDir = rawName === "." || rawName === "./" || rawName === ".\\";
+  const targetDir = isCurrentDir ? "." : projectName;
+  const displayName = isCurrentDir ? path.basename(process.cwd()) : projectName;
+
+  console.log(cyan(`\n🚀 Creando proyecto '${displayName}' desde ${repo}...\n`));
+  execSync(`npx degit ${repo} ${targetDir}`, { stdio: "inherit" });
   console.log(yellow(`\n📦 Instalando dependencias para runtime: ${selected.runtime}...\n`));
 
   try {
     if (selected.runtime === "node") {
       const pm = selected.packageManager || "pnpm";
-      execSync(`cd ${projectName} && ${pm} install`, { stdio: "inherit" });
+      execSync(`cd "${targetDir}" && ${pm} install`, { stdio: "inherit" });
     } else if (selected.runtime === "bun") {
-      execSync(`cd ${projectName} && bun install`, { stdio: "inherit" });
+      execSync(`cd "${targetDir}" && bun install`, { stdio: "inherit" });
     } else if (selected.runtime === "deno") {
       console.log(yellow("ℹ️ Deno no requiere instalación de dependencias (usa import maps)."));
     } else {
@@ -116,12 +123,12 @@ async function main() {
 
 
 
-  console.log(green(`\n✅ Proyecto '${projectName}' creado con éxito.`));
+  console.log(green(`\n✅ Proyecto '${displayName}' creado con éxito.`));
   console.log(cyan(`\n👉 Siguientes pasos:`));
-  console.log(`cd ${projectName}`);
-  if (selected.runtime === "bun") console.log(`bun dev`);
-  else if (selected.runtime === "deno") console.log(`deno task start`);
-  else console.log(`${selected.packageManager || "pnpm"} dev`);
+  console.log(`cd ${targetDir}`);
+  if (selected.runtime === "bun") console.log(green(`bun dev`));
+  else if (selected.runtime === "deno") console.log(green(`deno task start`));
+  else console.log(green(`${selected.packageManager || "pnpm"} dev`));
 
 }
 
