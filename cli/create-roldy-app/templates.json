@@ -1,0 +1,14 @@
+{
+  "frontend": {
+    "vue": {
+      "name": "Vue + Tailwind + shadcn-vue + Axios",
+      "repo": "roldyoran/roldy-templates/templates/frontend/vue-spa-shadcn"
+    }
+  },
+  "backend": {
+    "hono": {
+      "name": "Hono + Bun + Typescript + Zod",
+      "repo": "roldyoran/roldy-templates/templates/backend/hono-bun-pgsql"
+    }
+  }
+}
