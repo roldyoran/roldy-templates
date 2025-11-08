@@ -2,13 +2,17 @@
   "frontend": {
     "vue": {
       "name": "Vue + Tailwind + shadcn-vue + Axios",
-      "repo": "roldyoran/roldy-templates/templates/frontend/vue-spa-shadcn"
+      "repo": "roldyoran/roldy-templates/templates/frontend/vue-spa-shadcn",
+      "runtime": "node",
+      "packageManager": "pnpm"
     }
   },
   "backend": {
     "hono": {
       "name": "Hono + Bun + Typescript + Zod",
-      "repo": "roldyoran/roldy-templates/templates/backend/hono-bun-pgsql"
+      "repo": "roldyoran/roldy-templates/templates/backend/hono-bun-pgsql",
+      "runtime": "bun",
+      "packageManager": "bun"
     }
   }
 }
