@@ -104,28 +104,22 @@ async function main() {
 
   console.log(cyan(`\n🚀 Creando proyecto '${displayName}' desde ${repo}...\n`));
   execSync(`npx degit ${repo} ${targetDir}`, { stdio: "inherit" });
-  console.log(yellow(`\n📦 Instalando dependencias para runtime: ${selected.runtime}...\n`));
-
-  try {
-    if (selected.runtime === "node") {
-      const pm = selected.packageManager || "pnpm";
-      execSync(`cd "${targetDir}" && ${pm} install`, { stdio: "inherit" });
-    } else if (selected.runtime === "bun") {
-      execSync(`cd "${targetDir}" && bun install`, { stdio: "inherit" });
-    } else if (selected.runtime === "deno") {
-      console.log(yellow("ℹ️ Deno no requiere instalación de dependencias (usa import maps)."));
-    } else {
-      console.log(yellow("⚙️ No se requiere instalación de dependencias."));
-    }
-  } catch (e) {
-    console.error(red("❌ Error instalando dependencias:"), e);
-  }
-
-
+  console.log(yellow(`\n📦 Configuración recomendada para runtime: ${selected.runtime}\n`));
 
   console.log(green(`\n✅ Proyecto '${displayName}' creado con éxito.`));
   console.log(cyan(`\n👉 Siguientes pasos:`));
-  console.log(`cd ${targetDir}`);
+
+  const recommendedPm = selected.packageManager || (selected.runtime === "bun" ? "bun" : selected.runtime === "deno" ? "deno" : "pnpm");
+  console.log(cyan(`- Runtime recomendado: ${selected.runtime}`));
+  if (selected.runtime === "deno") {
+    console.log(cyan("ℹ️ Deno no requiere instalación de dependencias (usa import maps)."));
+  } else {
+    console.log(cyan(`- Gestor de paquetes recomendado: ${selected.packageManager || "pnpm"}`));
+    console.log(cyan("\nInstala las dependencias del proyecto:"));
+    console.log(green(`\ncd ${targetDir}`));
+    console.log(green(`${recommendedPm} install`));
+  }
+
   if (selected.runtime === "bun") console.log(green(`bun dev`));
   else if (selected.runtime === "deno") console.log(green(`deno task start`));
   else console.log(green(`${selected.packageManager || "pnpm"} dev`));
