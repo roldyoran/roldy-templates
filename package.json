@@ -2,8 +2,7 @@
   "name": "roldy-templates",
   "private": true,
   "workspaces": [
-    "cli/*",
-    "templates/*"
+    "cli/*"
   ],
   "version": "1.0.0",
   "description": "A collection of templates for roldyoran projects",
