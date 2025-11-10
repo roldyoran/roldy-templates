@@ -104,7 +104,7 @@ async function main() {
 
   console.log(cyan(`\n🚀 Creando proyecto '${displayName}' desde ${repo}...\n`));
   execSync(`npx degit ${repo} ${targetDir}`, { stdio: "inherit" });
-  console.log(yellow(`\n📦 Configuración recomendada para runtime: ${selected.runtime}\n`));
+  // console.log(yellow(`\n📦 Configuración recomendada para runtime: ${selected.runtime}\n`));
 
   console.log(green(`\n✅ Proyecto '${displayName}' creado con éxito.`));
   console.log(cyan(`\n👉 Siguientes pasos:`));
