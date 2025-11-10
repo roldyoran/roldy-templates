@@ -110,13 +110,15 @@ async function main() {
   console.log(cyan(`\n👉 Siguientes pasos:`));
 
   const recommendedPm = selected.packageManager || (selected.runtime === "bun" ? "bun" : selected.runtime === "deno" ? "deno" : "pnpm");
-  console.log(cyan(`- Runtime recomendado: ${selected.runtime}`));
+  console.log(yellow(`- Runtime recomendado: ${selected.runtime}`));
   if (selected.runtime === "deno") {
-    console.log(cyan("ℹ️ Deno no requiere instalación de dependencias (usa import maps)."));
+    console.log(yellow("ℹ️ Deno no requiere instalación de dependencias (usa import maps)."));
   } else {
-    console.log(cyan(`- Gestor de paquetes recomendado: ${selected.packageManager || "pnpm"}`));
-    console.log(cyan("\nInstala las dependencias del proyecto:"));
-    console.log(green(`\ncd ${targetDir}`));
+    console.log(yellow(`- Gestor de paquetes recomendado: ${selected.packageManager || "pnpm"}`));
+    console.log(yellow("\nInstala las dependencias del proyecto:"));
+    if (!isCurrentDir) {
+      console.log(green(`\ncd ${targetDir}`));
+    }
     console.log(green(`${recommendedPm} install`));
   }
 
