@@ -13,6 +13,12 @@
       "repo": "roldyoran/roldy-templates/templates/backend/hono-bun-pgsql",
       "runtime": "bun",
       "packageManager": "bun"
+    },
+    "go-fiber": {
+      "name": "Go + Fiber + CORS + Logger",
+      "repo": "roldyoran/roldy-templates/templates/backend/go-fiber",
+      "runtime": "go",
+      "packageManager": "go mod tidy"
     }
   }
 }
