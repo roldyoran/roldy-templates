@@ -8,9 +8,10 @@ import (
 	// command: air
 	// go install github.com/air-verse/air@latest
 
-    "github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"go-fiber/products"
 )
 
 func main() {
@@ -43,6 +44,9 @@ func main() {
 	// app.Post("/", func (c *fiber.Ctx) error {
 	// 	return c.SendString("POST request")
 	// })
+
+	// Register product routes from the products package
+	products.RegisterRoutes(app)
 
     log.Fatal(app.Listen(":4200"))
 }
